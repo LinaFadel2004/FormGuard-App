@@ -1,0 +1,52 @@
+[
+  {
+    "id": "1",
+    "name": "Pushups",
+    "bodyPart": "chest",
+    "targetMuscle": "pectorals",
+    "duration": "10 mins",
+    "level": "Beginner",
+    "category": "strength",
+    "imageUrl": "https://images.unsplash.com/photo-1598971639058-fab3c3109a00?q=80&w=600"
+  },
+  {
+    "id": "2",
+    "name": "Bicep Curls",
+    "bodyPart": "upper arms",
+    "targetMuscle": "biceps",
+    "duration": "10 mins",
+    "level": "Beginner",
+    "category": "strength",
+    "imageUrl": "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600"
+  },
+  {
+    "id": "3",
+    "name": "Lateral Raises",
+    "bodyPart": "upper arms",
+    "targetMuscle": "shoulders",
+    "duration": "12 mins",
+    "level": "Intermediate",
+    "category": "strength",
+    "imageUrl": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600"
+  },
+  {
+    "id": "4",
+    "name": "Dumbbell Overhead Press",
+    "bodyPart": "upper arms",
+    "targetMuscle": "shoulders",
+    "duration": "15 mins",
+    "level": "Advanced",
+    "category": "strength",
+    "imageUrl": "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600"
+  },
+  {
+    "id": "5",
+    "name": "Jumping Jacks",
+    "bodyPart": "cardio",
+    "targetMuscle": "full body",
+    "duration": "5 mins",
+    "level": "Beginner",
+    "category": "cardio",
+    "imageUrl": "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=600"
+  }
+]
