@@ -6,6 +6,7 @@ class WorkoutModel {
   final String bodyPart;
   final String targetMuscle;
   final String category;
+  final String gifUrl;
 
   WorkoutModel({
     required this.name,
@@ -15,6 +16,7 @@ class WorkoutModel {
     required this.bodyPart,
     required this.targetMuscle,
     required this.category,
+    required this.gifUrl,
   });
 
   factory WorkoutModel.fromJson(Map<String, dynamic> json) {
@@ -26,6 +28,7 @@ class WorkoutModel {
       bodyPart: json['bodyPart'] ?? '',
       targetMuscle: json['targetMuscle'] ?? '',
       category: json['category'] ?? '',
+      gifUrl: json['gifUrl'] ?? '',
     );
   }
 }
