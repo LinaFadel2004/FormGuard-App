@@ -15,7 +15,8 @@ class PosePainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final pointPaint = Paint()..style = PaintingStyle.fill..strokeWidth = 3.0..color = AppColor.primaryColor;
     final linePaint = Paint()..style = PaintingStyle.stroke..strokeWidth = 4.0..color = AppColor.primaryColor.withOpacity(0.8);
-    final arrowPaint = Paint()..style = PaintingStyle.stroke..strokeWidth = 6.0..color = AppColor.errorColor..strokeCap = StrokeCap.round;
+    // كبّرت عرض السهم شوية عشان يكون أوضح لليوزر
+    final arrowPaint = Paint()..style = PaintingStyle.stroke..strokeWidth = 8.0..color = AppColor.errorColor..strokeCap = StrokeCap.round;
 
     final faceLandmarks = {
       PoseLandmarkType.nose, PoseLandmarkType.leftEyeInner, PoseLandmarkType.leftEye, PoseLandmarkType.leftEyeOuter,
@@ -62,23 +63,32 @@ class PosePainter extends CustomPainter {
         }
       });
 
-      // Arrows
+      // Arrows (التعديل هنا)
       for (var arrow in arrowsData) {
         try {
-          double startX = size.width - (arrow['point'][0] * scaleX);
-          double startY = arrow['point'][1] * scaleY;
+          // 1. تحويل الأرقام (من 0 لـ 1) لبيكسلات الكاميرا الأصلية
+          double rawX = arrow['point'][0] * absoluteImageSize.width;
+          double rawY = arrow['point'][1] * absoluteImageSize.height;
+
+          // 2. تحويلها لمقاس شاشة الموبايل بنفس طريقة رسم العظم بالظبط
+          double startX = size.width - (rawX * scaleX);
+          double startY = rawY * scaleY;
+
           double dirX = arrow['direction'][0];
           double dirY = arrow['direction'][1];
 
-          double len = 60.0;
+          double len = 70.0; // طول السهم
+
+          // بنطرح الـ X عشان الموبايل شغال كمراية (Mirroring)
           double endX = startX - (dirX * len);
           double endY = startY + (dirY * len);
 
           canvas.drawLine(Offset(startX, startY), Offset(endX, endY), arrowPaint);
 
+          // رسم رأس السهم
           double angle = math.atan2(endY - startY, endX - startX);
-          canvas.drawLine(Offset(endX, endY), Offset(endX - 15 * math.cos(angle - math.pi / 6), endY - 15 * math.sin(angle - math.pi / 6)), arrowPaint);
-          canvas.drawLine(Offset(endX, endY), Offset(endX - 15 * math.cos(angle + math.pi / 6), endY - 15 * math.sin(angle + math.pi / 6)), arrowPaint);
+          canvas.drawLine(Offset(endX, endY), Offset(endX - 20 * math.cos(angle - math.pi / 6), endY - 20 * math.sin(angle - math.pi / 6)), arrowPaint);
+          canvas.drawLine(Offset(endX, endY), Offset(endX - 20 * math.cos(angle + math.pi / 6), endY - 20 * math.sin(angle + math.pi / 6)), arrowPaint);
         } catch (_) {}
       }
     }

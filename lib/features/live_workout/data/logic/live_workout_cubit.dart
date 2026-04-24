@@ -28,6 +28,7 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
   Size? _imageSize;
 
   List<String> _errorLog = [];
+  int goodPoses = 0;
 
   // 1. بدء التمرين
   void startWorkout(String ipAddress, WorkoutModel workout) {
@@ -77,6 +78,9 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
     if (_aiFeedback != "Perfect!" && _aiFeedback != "Detecting position") {
       _errorLog.add(_aiFeedback);
     }
+    else if (_aiFeedback == "Perfect!") {
+      goodPoses++;
+    }
 
     _emitRunningState();
   }
@@ -91,9 +95,10 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
       errorFreq[error] = (errorFreq[error] ?? 0) + 1;
     }
 
-    // حساب الـ Form Score
-    int score = 100 - (_errorLog.length * 2); // خصم درجتين على كل خطأ كمثال
+    // Form Score
+    int score = 100 - (_errorLog.length) + (goodPoses * 3);
     if (score < 0) score = 0;
+    if (score > 100) score = 100;
     if (_repsCount == 0 && _errorLog.isEmpty) score = 0; // لو ملعبش حاجة خالص
 
     emit(LiveWorkoutFinished(
@@ -104,7 +109,6 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
     ));
   }
 
-  // 4. تحديث حالة الشاشة
   void _emitRunningState() {
     if (isClosed) return;
     emit(
@@ -120,19 +124,26 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
     );
   }
 
-  // 5. تجهيز النقط للصيغة اللي بايثون بيفهمها
+  // تجهيز النقط لبايثون (Normalized Data)
   List<Map<String, double>> _formatPoints(List<Pose> poses) {
     List<Map<String, double>> pointsList = [];
-    if (poses.isEmpty) return pointsList;
+    if (poses.isEmpty || _imageSize == null) return pointsList;
 
     final pose = poses.first;
     for (int i = 0; i < 33; i++) {
       final landmark = pose.landmarks[PoseLandmarkType.values[i]];
-      pointsList.add(
-        landmark != null
-            ? {"x": landmark.x, "y": landmark.y, "z": landmark.z}
-            : {"x": 0.0, "y": 0.0, "z": 0.0},
-      );
+
+      if (landmark != null) {
+        // بنقسم الـ x و الـ y على أبعاد الصورة عشان نبعت أرقام من 0 لـ 1 (Normalized)
+        double normalizedX = landmark.x / _imageSize!.width;
+        double normalizedY = landmark.y / _imageSize!.height;
+        // بنقسم الـ z على الـ width كنسبة تقريبية للعمق
+        double normalizedZ = landmark.z / _imageSize!.width;
+
+        pointsList.add({"x": normalizedX, "y": normalizedY, "z": normalizedZ});
+      } else {
+        pointsList.add({"x": 0.0, "y": 0.0, "z": 0.0});
+      }
     }
     return pointsList;
   }
