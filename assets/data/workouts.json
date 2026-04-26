@@ -45,13 +45,13 @@
   },
   {
     "id": "5",
-    "name": "Jumping Jacks",
-    "bodyPart": "cardio",
-    "targetMuscle": "full body",
-    "duration": "5 mins",
-    "level": "Beginner",
-    "category": "cardio",
-    "imageUrl": "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?q=80&w=600",
-    "gifUrl": "assets/lotties/jumping_jack.json"
+    "name": "Overhead Tricep Extension",
+    "bodyPart": "upper arms",
+    "targetMuscle": "triceps",
+    "duration": "10 mins",
+    "level": "Intermediate",
+    "category": "strength",
+    "imageUrl": "https://images.unsplash.com/photo-1530822847156-5df684ec5ee1?q=80&w=600",
+    "gifUrl": "assets/lotties/overhead_tricep.json"
   }
 ]

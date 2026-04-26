@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formguard/features/home/presentation/cubit/workout_cubit.dart';
 import '../../../../core/constants/app_color.dart';
-import '../cubit/workout_state.dart';
+import '../../data/cubit/workout_cubit.dart';
+import '../../data/cubit/workout_state.dart';
 
 class CategoryFilter extends StatefulWidget {
   const CategoryFilter({super.key});

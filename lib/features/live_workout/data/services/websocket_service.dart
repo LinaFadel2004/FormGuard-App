@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter/material.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../models/ai_feedback_model.dart';
@@ -35,17 +36,16 @@ class WebSocketService {
   }
 
   // الدالة دي الـ Cubit هينادي عليها كل ما الكاميرا تطلع نقط جديدة
-  void sendPoseData({required String workoutName, required List<Map<String, double>> points}) {
+  void sendPoseData({required String workoutName, required List<Map<String, dynamic>> points}) {
     if (_channel != null) {
       final payload = {
         "workout": workoutName,
-        "points": points
+        "points": points,
       };
       _channel!.sink.add(jsonEncode(payload));
     }
   }
 
-  // 3. تنظيف الاتصال لما نقفل الشاشة
   void dispose() {
     _channel?.sink.close();
   }

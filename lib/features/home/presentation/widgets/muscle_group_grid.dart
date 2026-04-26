@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/constants/app_color.dart';
-import '../cubit/muscle_cubit.dart';
-import '../cubit/muscle_state.dart';
-import '../cubit/workout_cubit.dart';
+
+import '../../data/cubit/muscle_cubit.dart';
+import '../../data/cubit/muscle_state.dart';
+import '../../data/cubit/workout_cubit.dart';
 import '../screens/explore_screen.dart';
 
 class MuscleGrid extends StatelessWidget {

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:bloc/bloc.dart';
-import 'package:camera/camera.dart';
 import 'package:google_mlkit_pose_detection/google_mlkit_pose_detection.dart';
 import '../../../home/data/models/workout_model.dart';
 import '../../data/models/ai_feedback_model.dart';
@@ -36,7 +35,6 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
     int minutes = int.tryParse(workout.duration.split(' ')[0]) ?? 5;
     _remainingSeconds = minutes * 60;
 
-    // الاتصال بسيرفر بايثون
     _webSocketService.connect(ipAddress, _onWebSocketMessage);
 
     // تشغيل الكاميرا واستقبال الـ frames
@@ -74,7 +72,6 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
     _repsCount = feedback.reps;
     _arrowsData = feedback.arrows;
 
-    // تسجيل الأخطاء (بنتجاهل الرسائل الإيجابية أو المحايدة)
     if (_aiFeedback != "Perfect!" && _aiFeedback != "Detecting position") {
       _errorLog.add(_aiFeedback);
     }
@@ -85,7 +82,6 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
     _emitRunningState();
   }
 
-  // 3. إنهاء التمرين وحساب النتائج (بتتنده لما التايمر يخلص أو لما اليوزر يدوس X)
   void finishWorkout() {
     _timer?.cancel();
 
@@ -96,7 +92,7 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
     }
 
     // Form Score
-    int score = 100 - (_errorLog.length) + (goodPoses * 3);
+    double score = 100 - (_errorLog.length * 0.25) + (goodPoses * 3);
     if (score < 0) score = 0;
     if (score > 100) score = 100;
     if (_repsCount == 0 && _errorLog.isEmpty) score = 0; // لو ملعبش حاجة خالص
@@ -125,22 +121,23 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
   }
 
   // تجهيز النقط لبايثون (Normalized Data)
-  List<Map<String, double>> _formatPoints(List<Pose> poses) {
-    List<Map<String, double>> pointsList = [];
+  List<Map<String, dynamic>> _formatPoints(List<Pose> poses) {
+    List<Map<String, dynamic>> pointsList = [];
     if (poses.isEmpty || _imageSize == null) return pointsList;
 
     final pose = poses.first;
+    double width = _imageSize!.width;
+    double height = _imageSize!.height;
+
     for (int i = 0; i < 33; i++) {
       final landmark = pose.landmarks[PoseLandmarkType.values[i]];
-
       if (landmark != null) {
-        // بنقسم الـ x و الـ y على أبعاد الصورة عشان نبعت أرقام من 0 لـ 1 (Normalized)
-        double normalizedX = landmark.x / _imageSize!.width;
-        double normalizedY = landmark.y / _imageSize!.height;
-        // بنقسم الـ z على الـ width كنسبة تقريبية للعمق
-        double normalizedZ = landmark.z / _imageSize!.width;
-
-        pointsList.add({"x": normalizedX, "y": normalizedY, "z": normalizedZ});
+        // بنعمل Normalize صريح اهو زي ما هما عايزين
+        pointsList.add({
+          "x": landmark.x / width,
+          "y": landmark.y / height,
+          "z": landmark.z / width
+        });
       } else {
         pointsList.add({"x": 0.0, "y": 0.0, "z": 0.0});
       }

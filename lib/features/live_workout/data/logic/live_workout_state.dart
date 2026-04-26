@@ -30,7 +30,7 @@ class LiveWorkoutRunning extends LiveWorkoutState {
 class LiveWorkoutFinished extends LiveWorkoutState {
   final int totalReps;
   final int activeSeconds;
-  final int formScore;
+  final double formScore;
   final Map<String, int> errorFrequencies; // عشان نعرض أكتر أخطاء اتكررت
 
   LiveWorkoutFinished({

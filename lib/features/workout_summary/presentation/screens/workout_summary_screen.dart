@@ -5,7 +5,7 @@ class WorkoutSummaryScreen extends StatelessWidget {
   final String workoutName;
   final int correctReps;
   final int activeSeconds;
-  final int formScore;
+  final double formScore;
   final Map<String, int> errorFrequencies;
 
   const WorkoutSummaryScreen({

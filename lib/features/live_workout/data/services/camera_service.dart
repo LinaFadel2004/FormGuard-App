@@ -23,7 +23,7 @@ class CameraPoseService {
 
       controller = CameraController(
         _frontCamera!,
-        ResolutionPreset.medium,
+        ResolutionPreset.high,
         enableAudio: false,
         imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.bgra8888,
       );
@@ -80,7 +80,6 @@ class CameraPoseService {
     }
   }
 
-  // تنظيف الميموري لما نقفل الشاشة
   void dispose() {
     controller?.stopImageStream();
     controller?.dispose();

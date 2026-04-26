@@ -63,29 +63,29 @@ class PosePainter extends CustomPainter {
         }
       });
 
-      // Arrows (التعديل هنا)
+      // Arrows
       for (var arrow in arrowsData) {
         try {
-          // 1. تحويل الأرقام (من 0 لـ 1) لبيكسلات الكاميرا الأصلية
-          double rawX = arrow['point'][0] * absoluteImageSize.width;
-          double rawY = arrow['point'][1] * absoluteImageSize.height;
+          // هنرجع نضرب في نفس الرقم اللي قسمنا عليه هناك
+          double uniformScale = absoluteImageSize.width;
 
-          // 2. تحويلها لمقاس شاشة الموبايل بنفس طريقة رسم العظم بالظبط
+          double rawX = arrow['point'][0] * uniformScale;
+          double rawY = arrow['point'][1] * uniformScale;
+
+          // التحويل لمقاس شاشة الموبايل زي ما هو
           double startX = size.width - (rawX * scaleX);
           double startY = rawY * scaleY;
 
           double dirX = arrow['direction'][0];
           double dirY = arrow['direction'][1];
 
-          double len = 70.0; // طول السهم
+          double len = 70.0;
 
-          // بنطرح الـ X عشان الموبايل شغال كمراية (Mirroring)
           double endX = startX - (dirX * len);
           double endY = startY + (dirY * len);
 
           canvas.drawLine(Offset(startX, startY), Offset(endX, endY), arrowPaint);
 
-          // رسم رأس السهم
           double angle = math.atan2(endY - startY, endX - startX);
           canvas.drawLine(Offset(endX, endY), Offset(endX - 20 * math.cos(angle - math.pi / 6), endY - 20 * math.sin(angle - math.pi / 6)), arrowPaint);
           canvas.drawLine(Offset(endX, endY), Offset(endX - 20 * math.cos(angle + math.pi / 6), endY - 20 * math.sin(angle + math.pi / 6)), arrowPaint);

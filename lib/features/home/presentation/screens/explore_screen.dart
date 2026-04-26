@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:formguard/features/home/data/models/workout_model.dart';
-import 'package:formguard/features/home/presentation/cubit/workout_cubit.dart';
 import 'package:formguard/features/home/presentation/widgets/workout_card.dart';
 
+import '../../data/cubit/workout_cubit.dart';
+import '../../data/cubit/workout_state.dart';
 import '../../data/models/category_model.dart';
 import '../../data/services/workout_service.dart';
-import '../cubit/workout_state.dart';
 
 class ExploreScreen extends StatelessWidget {
   final CategoryModel category;

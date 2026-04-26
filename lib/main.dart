@@ -5,11 +5,9 @@ import 'package:formguard/core/theme/app_theme.dart';
 import 'package:formguard/features/home/data/services/category_service.dart';
 import 'package:formguard/features/home/presentation/screens/home_screen.dart';
 
+import 'features/home/data/cubit/muscle_cubit.dart';
+import 'features/home/data/cubit/workout_cubit.dart';
 import 'features/home/data/services/workout_service.dart';
-import 'features/home/presentation/cubit/muscle_cubit.dart';
-import 'features/home/presentation/cubit/workout_cubit.dart';
-import 'features/home/presentation/screens/explore_screen.dart';
-import 'features/live_workout/presentation/screens/live_workout_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
