@@ -8,13 +8,12 @@ import '../../data/services/websocket_service.dart';
 import '../services/camera_service.dart';
 import 'live_workout_state.dart';
 
-
 class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
   final CameraPoseService _cameraService;
   final WebSocketService _webSocketService;
 
   LiveWorkoutCubit(this._cameraService, this._webSocketService)
-      : super(LiveWorkoutInitial());
+    : super(LiveWorkoutInitial());
 
   Timer? _timer;
   int _remainingSeconds = 0;
@@ -74,15 +73,18 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
 
     if (_aiFeedback != "Perfect!" && _aiFeedback != "Detecting position") {
       _errorLog.add(_aiFeedback);
-    }
-    else if (_aiFeedback == "Perfect!") {
+    } else if (_aiFeedback == "Perfect!") {
       goodPoses++;
     }
-
+    if (_repsCount >= 5) {
+      finishWorkout();
+      return;
+    }
     _emitRunningState();
   }
 
   void finishWorkout() {
+    _webSocketService.dispose();
     _timer?.cancel();
 
     // تجميع أكثر الأخطاء تكراراً
@@ -97,12 +99,14 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
     if (score > 100) score = 100;
     if (_repsCount == 0 && _errorLog.isEmpty) score = 0; // لو ملعبش حاجة خالص
 
-    emit(LiveWorkoutFinished(
-      totalReps: _repsCount,
-      activeSeconds: _activeSeconds,
-      formScore: score,
-      errorFrequencies: errorFreq,
-    ));
+    emit(
+      LiveWorkoutFinished(
+        totalReps: _repsCount,
+        activeSeconds: _activeSeconds,
+        formScore: score,
+        errorFrequencies: errorFreq,
+      ),
+    );
   }
 
   void _emitRunningState() {
@@ -136,7 +140,7 @@ class LiveWorkoutCubit extends Cubit<LiveWorkoutState> {
         pointsList.add({
           "x": landmark.x / width,
           "y": landmark.y / height,
-          "z": landmark.z / width
+          "z": landmark.z / width,
         });
       } else {
         pointsList.add({"x": 0.0, "y": 0.0, "z": 0.0});

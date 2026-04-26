@@ -13,7 +13,7 @@ class StatsRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildStatBox(context, "Reps:", "$repsCount/12"),
+        _buildStatBox(context, "Reps:", "$repsCount/5"),
         _buildStatBox(context, "Timer:", formattedTime),
       ],
     );

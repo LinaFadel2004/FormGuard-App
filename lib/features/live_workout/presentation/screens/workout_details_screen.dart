@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:formguard/features/live_workout/presentation/widgets/details_card.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../../core/constants/app_color.dart';
 import '../../../home/data/models/workout_model.dart';
@@ -20,11 +21,11 @@ class WorkoutDetailsScreen extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Image.network(
-                  workout.imageUrl,
+                Lottie.asset(
+                  workout.gifUrl,
                   width: double.infinity,
                   height: 350,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
                 //decoration gradient
                 Container(

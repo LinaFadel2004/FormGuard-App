@@ -12,12 +12,5 @@
     "displayName": "ARMS & SHOULDERS",
     "exerciseCount": "3 exercises",
     "imageUrl": "assets/images/arms.png"
-  },
-  {
-    "id": "c3",
-    "apiName": "cardio",
-    "displayName": "CARDIO",
-    "exerciseCount": "1 exercise",
-    "imageUrl": "assets/images/cardio.png"
   }
 ]

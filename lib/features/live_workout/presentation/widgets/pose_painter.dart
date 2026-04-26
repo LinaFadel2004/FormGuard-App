@@ -66,13 +66,10 @@ class PosePainter extends CustomPainter {
       // Arrows
       for (var arrow in arrowsData) {
         try {
-          // هنرجع نضرب في نفس الرقم اللي قسمنا عليه هناك
-          double uniformScale = absoluteImageSize.width;
+          double rawX = arrow['point'][0] * absoluteImageSize.width;
+          double rawY = arrow['point'][1] * absoluteImageSize.height;
 
-          double rawX = arrow['point'][0] * uniformScale;
-          double rawY = arrow['point'][1] * uniformScale;
-
-          // التحويل لمقاس شاشة الموبايل زي ما هو
+          // التحويل لمقاس شاشة الموبايل
           double startX = size.width - (rawX * scaleX);
           double startY = rawY * scaleY;
 
@@ -81,11 +78,13 @@ class PosePainter extends CustomPainter {
 
           double len = 70.0;
 
+          // رسم خط السهم
           double endX = startX - (dirX * len);
           double endY = startY + (dirY * len);
 
           canvas.drawLine(Offset(startX, startY), Offset(endX, endY), arrowPaint);
 
+          // رسم رأس السهم
           double angle = math.atan2(endY - startY, endX - startX);
           canvas.drawLine(Offset(endX, endY), Offset(endX - 20 * math.cos(angle - math.pi / 6), endY - 20 * math.sin(angle - math.pi / 6)), arrowPaint);
           canvas.drawLine(Offset(endX, endY), Offset(endX - 20 * math.cos(angle + math.pi / 6), endY - 20 * math.sin(angle + math.pi / 6)), arrowPaint);

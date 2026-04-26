@@ -23,7 +23,7 @@ class CameraPoseService {
 
       controller = CameraController(
         _frontCamera!,
-        ResolutionPreset.high,
+        ResolutionPreset.low,
         enableAudio: false,
         imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.bgra8888,
       );
