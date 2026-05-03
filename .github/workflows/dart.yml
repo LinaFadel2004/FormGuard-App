@@ -16,14 +16,18 @@ jobs:
           architecture: x64
 
       - run: flutter pub get
-      
-      - name: Force iOS 15.5 Target
+
+      # الخطوة السحرية: تعديل الـ Podfile أوتوماتيكياً لإصدار 15.5 وإضافة إعدادات الإجبار
+      - name: Force iOS Deployment Target in Podfile
         run: |
-          flutter build ios --config-only --no-codesign
-          cd ios
-          sed -i '' "s/^# platform :ios.*/platform :ios, '15.5'/" Podfile
-          sed -i '' "s/^platform :ios.*/platform :ios, '15.5'/" Podfile
-          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = .*/IPHONEOS_DEPLOYMENT_TARGET = 15.5;/g' Runner.xcodeproj/project.pbxproj
+          sed -i '' "s/platform :ios, .*/platform :ios, '15.5'/g" ios/Podfile
+          echo "post_install do |installer|" >> ios/Podfile
+          echo "  installer.pods_project.targets.each do |target|" >> ios/Podfile
+          echo "    target.build_configurations.each do |config|" >> ios/Podfile
+          echo "      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '15.5'" >> ios/Podfile
+          echo "    end" >> ios/Podfile
+          echo "  end" >> ios/Podfile
+          echo "end" >> ios/Podfile
 
       - run: pod repo update
         working-directory: ios
