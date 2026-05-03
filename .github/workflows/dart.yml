@@ -14,29 +14,43 @@ jobs:
         with:
           channel: 'stable'
           architecture: x64
-      - run: flutter pub get
-      
 
-      - run: pod repo update
+      - name: Preparation & Force Config
+        run: |
+          # 1. تحميل المكتبات العادية
+          flutter pub get
+          
+          # 2. إنشاء المجلد والملف اللي الـ Podfile بيشتكي منه "يدوياً" لتجاوز خطأ الـ raise
+          mkdir -p ios/Flutter
+          touch ios/Flutter/Generated.xcconfig
+          echo "FLUTTER_ROOT=$(flutter sdk-path)" >> ios/Flutter/Generated.xcconfig
+          echo "FLUTTER_APPLICATION_PATH=$(pwd)" >> ios/Flutter/Generated.xcconfig
+          echo "PACKAGE_CONFIG=$(pwd)/.dart_tool/package_config.json" >> ios/Flutter/Generated.xcconfig
+          
+          # 3. إجبار نسخة 15.5 في كل ملفات المشروع الأساسية (pbxproj) أوتوماتيكياً
+          find . -name "project.pbxproj" -exec sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = [0-9.]*/IPHONEOS_DEPLOYMENT_TARGET = 15.5/g' {} +
+
+      - name: Install Pods
+        run: |
+          pod repo update
+          pod install
         working-directory: ios
 
-      - run: flutter build ios --release --no-codesign
+      - name: Build IPA
+        run: flutter build ios --release --no-codesign
 
-      - run: mkdir Payload
-        working-directory: build/ios/iphoneos
-
-      - run: mv Runner.app/ Payload
-        working-directory: build/ios/iphoneos
-
-      - name: Zip output
-        run: zip -qq -r -9 FlutterIpaExport.ipa Payload
-        working-directory: build/ios/iphoneos
+      - name: Prepare Artifacts
+        run: |
+          mkdir -p Payload
+          mv build/ios/iphoneos/Runner.app Payload/
+          zip -qq -r -9 FlutterIpaExport.ipa Payload
+        working-directory: .
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/ios/iphoneos/FlutterIpaExport.ipa
+          file: FlutterIpaExport.ipa
           tag: v1.0
           overwrite: true
-          body: "This is first release"
+          body: "This is the fixed iOS build for FormGuard"
