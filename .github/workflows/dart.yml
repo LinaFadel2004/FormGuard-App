@@ -17,11 +17,15 @@ jobs:
 
       - run: flutter pub get
       
-      - name: Fix Podfile for ML Kit
+      - name: Force iOS 15.5 Target
         run: |
           flutter build ios --config-only
           cd ios
-          sed -i '' "s/# platform :ios, .*/platform :ios, '15.5'/g" Podfile
+          # تعديل الـ Podfile بالقوة
+          sed -i '' "s/^# platform :ios.*/platform :ios, '15.5'/" Podfile
+          sed -i '' "s/^platform :ios.*/platform :ios, '15.5'/" Podfile
+          # تعديل ملفات إعدادات الـ Xcode بالقوة
+          sed -i '' 's/IPHONEOS_DEPLOYMENT_TARGET = .*/IPHONEOS_DEPLOYMENT_TARGET = 15.5;/g' Runner.xcodeproj/project.pbxproj
 
       - run: pod repo update
         working-directory: ios
