@@ -23,14 +23,13 @@ class CameraPoseService {
 
       controller = CameraController(
         _frontCamera!,
-        ResolutionPreset.low,
+        ResolutionPreset.medium,
         enableAudio: false,
         imageFormatGroup: Platform.isAndroid ? ImageFormatGroup.nv21 : ImageFormatGroup.bgra8888,
       );
 
       await controller!.initialize();
 
-      // بنبدأ ناخد الصور من الكاميرا فريم بفريم
       controller!.startImageStream((CameraImage image) {
         if (_isProcessing) return;
         _isProcessing = true;
