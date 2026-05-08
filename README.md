@@ -1,17 +1,24 @@
-# formguard
+FormGuard – AI Fitness Coach
 
-A new Flutter project.
+FormGuard is a Flutter-based fitness coaching application designed to help users perform exercises with better form and guidance.
 
-## Getting Started
+The application provides workout categories, exercise details, and visual guidance to create a simple and user-friendly fitness experience. The project was developed as part of a student activity collaboration with an AI team.
 
-This project is a starting point for a Flutter application.
+My Role
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter Developer
+- Building mobile UI screens
+- Feature integration
+- Collaborating with the AI team
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Workout categories
+- Exercise details screens
+- User-friendly mobile interface
+- AI-integrated fitness concept
+
+Technologies Used
+
+- Flutter
+- Dart
